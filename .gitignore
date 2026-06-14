@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Secrets and runtime data
+.env
+data/
+allowed_chats.json
+*.log
+
+# Local tooling
+.claude/
+.serena/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

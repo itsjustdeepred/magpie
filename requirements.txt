@@ -1,0 +1,3 @@
+python-telegram-bot>=22.0
+httpx>=0.27
+python-dotenv>=1.0

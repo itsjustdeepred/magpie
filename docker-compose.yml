@@ -1,0 +1,8 @@
+services:
+  magpie:
+    build: .
+    container_name: magpie
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./data:/data
