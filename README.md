@@ -1,5 +1,7 @@
 # Magpie
 
+[![Publish Docker image](https://github.com/itsjustdeepred/magpie/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/itsjustdeepred/magpie/actions/workflows/docker-publish.yml)
+
 A Telegram bot that bridges to **Lidarr**: send it a YouTube / Shazam / Spotify
 link (or simply `Artist - Title`) and it recognizes the track, finds the album
 containing it on MusicBrainz, asks you to confirm with inline buttons and then
@@ -72,6 +74,28 @@ To update after pulling new code, rebuild with `docker compose up -d --build`.
 If your Lidarr runs in another Docker network, make sure `LIDARR_URL` is
 reachable from this container (use the service name or host IP, not
 `localhost`).
+
+### Use the pre-built image
+
+Every push to `main` triggers a GitHub Actions workflow that builds a
+multi-architecture image (`linux/amd64` + `linux/arm64`) and publishes it to the
+GitHub Container Registry, so you don't have to build anything yourself:
+
+```bash
+docker run -d --name magpie \
+  --env-file .env \
+  -v "$(pwd)/data:/data" \
+  ghcr.io/itsjustdeepred/magpie:latest
+```
+
+Or with Compose — replace `build: .` in `docker-compose.yml` with:
+
+```yaml
+    image: ghcr.io/itsjustdeepred/magpie:latest
+```
+
+Available tags: `latest`, `main`, `sha-<commit>`, and `X.Y.Z` / `X.Y` for
+released versions (pushing a `vX.Y.Z` git tag publishes them).
 
 ### Without Compose
 
