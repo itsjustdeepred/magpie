@@ -47,7 +47,7 @@ def _ids(update: Update) -> tuple[int, int | None]:
 
 
 def _is_admin(cfg: Config, user_id: int | None) -> bool:
-    return cfg.admin_user_id is None or user_id == cfg.admin_user_id
+    return cfg.admin_user_id is not None and user_id == cfg.admin_user_id
 
 
 def _md_escape(s: str) -> str:
