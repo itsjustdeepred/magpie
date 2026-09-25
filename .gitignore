@@ -20,3 +20,4 @@ allowed_chats.json
 .DS_Store
 .idea/
 .vscode/
+tests/.data/

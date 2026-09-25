@@ -1,38 +1,23 @@
-import asyncio
 import logging
+import os
 
-from . import i18n
+from . import __version__, i18n
 from .bot import build_app
 from .config import Config
 from .lidarr import Lidarr
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=os.environ.get("LOG_LEVEL", "INFO").upper(),
     format="%(asctime)s %(levelname)s %(name)s: %(message)s",
 )
 logging.getLogger("httpx").setLevel(logging.WARNING)
 log = logging.getLogger("magpie")
 
 
-async def _check_lidarr(cfg: Config) -> None:
-    probe = Lidarr(cfg.lidarr_url, cfg.lidarr_api_key)
-    try:
-        info = await probe.status()
-        log.info("Connected to Lidarr %s at %s", info.get("version"), cfg.lidarr_url)
-    finally:
-        await probe.close()
-
-
 def main() -> None:
     cfg = Config.from_env()
     lang = i18n.set_language(cfg.language)
-    log.info("Bot language: %s", lang)
-
-    try:
-        asyncio.run(_check_lidarr(cfg))
-    except Exception as e:
-        log.warning("Lidarr unreachable (%s): the bot starts anyway, "
-                    "but adds will fail until it responds.", e)
+    log.info("Magpie %s, bot language: %s", __version__, lang)
 
     lidarr = Lidarr(
         cfg.lidarr_url, cfg.lidarr_api_key,
